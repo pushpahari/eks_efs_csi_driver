@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx123
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx123
+  template:
+    metadata:
+      labels:
+        app: nginx123
+    spec:
+      containers:
+      - name: nginx123
+        image: nginx
+        #command: ["/bin/sh", "-c", "while true; do echo $(date) >> /mnt/data/date.txt; sleep 1; done"]
+        volumeMounts:
+        - name: data-volume
+          mountPath: /mnt/data
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: "efs-pvc"
